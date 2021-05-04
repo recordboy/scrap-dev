@@ -22,13 +22,13 @@ function App() {
         console.log(data);
       });
 
-    fetch(`api/page`)
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        console.log(data);
-      });
+    // fetch(`api/page`)
+    //   .then((res) => {
+    //     return res.json();
+    //   })
+    //   .then((data) => {
+    //     console.log(data);
+    //   });
   };
   return (
     <div className="App">

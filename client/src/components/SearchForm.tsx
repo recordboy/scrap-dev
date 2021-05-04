@@ -10,7 +10,8 @@ const SearchForm = (props: { getData: any; isOnLoading: boolean }) => {
     <div className={isOnLoading ? "form disable" : "form"}>
       <TextField
         className="form-text"
-        label="검색"
+        label="search"
+        variant="outlined"
         disabled={isOnLoading ? true : false}
         onChange={(e: any) => {
           setKeyword(e.target.value);
@@ -38,7 +39,7 @@ const SearchForm = (props: { getData: any; isOnLoading: boolean }) => {
       >
         search
       </Button>
-      <Slider
+      {/* <Slider
         className="form-page"
         defaultValue={pageNum}
         getAriaValueText={(value: number) => {
@@ -50,7 +51,7 @@ const SearchForm = (props: { getData: any; isOnLoading: boolean }) => {
         marks
         min={10}
         max={50}
-      />
+      /> */}
     </div>
   );
 };

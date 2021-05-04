@@ -18,12 +18,9 @@ app.use("/api/data", async function (req, res, next) {
   res.json(resultList);
 });
 
-
-
 app.get("/api/page", function (req, res, next) {
-  res.json([{a: 'sada'}]);
+  res.json([{ a: "sada" }]);
 });
-
 
 console.log(`server running at http ${port}`);
 
@@ -37,6 +34,9 @@ const puppeteer = require("puppeteer");
  * @return {array} 검색 결과
  */
 async function openBrowser(keyword, pageNum) {
+  
+  let a = null;
+
   // 모든 검색결과
   let searchAllData = [];
 
@@ -61,6 +61,12 @@ async function openBrowser(keyword, pageNum) {
 
   // 키워드 검색
   await page.type("input[class='gLFyf gsfi']", String.fromCharCode(13));
+
+  // a = setInterval(() => {
+  //   console.log();
+
+  // }, 100);
+
 
   // 검색하고 싶은 페이지 수 만큼 반복
   for (let i = 0; i < 2; i++) {
