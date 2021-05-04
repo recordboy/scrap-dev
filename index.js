@@ -8,13 +8,22 @@ const app = express();
 const port = process.env.PORT || 5000;
 app.listen(port);
 
-// 미들웨어 함수를 특정 경로에 등록
-app.use("/api/data", async function (req, res) {
+let resultList;
+
+// 키워드 요청
+app.use("/api/data", async function (req, res, next) {
   console.log("검색 키워드: " + req.query.keyword);
-  const resultList = await openBrowser(req.query.keyword);
-  console.log(resultList);
+  console.log("검색 페이지: " + req.query.pageNum);
+  resultList = await openBrowser(req.query.keyword, req.query.pageNum);
   res.json(resultList);
 });
+
+
+
+app.get("/api/page", function (req, res, next) {
+  res.json([{a: 'sada'}]);
+});
+
 
 console.log(`server running at http ${port}`);
 
@@ -24,20 +33,21 @@ const puppeteer = require("puppeteer");
 /**
  * 브라우저 오픈 함수
  * @param {string} keyword 검색 키워드
+ * @param {number} pageNum 검색 페이지
  * @return {array} 검색 결과
  */
-async function openBrowser(keyword) {
+async function openBrowser(keyword, pageNum) {
   // 모든 검색결과
   let searchAllData = [];
 
   // 브라우저 실행 및 옵션, 현재 옵션은 headless 모드 사용 여부
-  const browser = await puppeteer.launch({ 
+  const browser = await puppeteer.launch({
     headless: true,
     args: [
       "--no-sandbox",
       "--disable-setuid-sandbox",
       "--window-size=1600,2000",
-    ]
+    ],
   });
 
   // 브라우저 열기
@@ -53,7 +63,9 @@ async function openBrowser(keyword) {
   await page.type("input[class='gLFyf gsfi']", String.fromCharCode(13));
 
   // 검색하고 싶은 페이지 수 만큼 반복
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 2; i++) {
+    console.log(i);
+
     // 처음 검색
     if (i === 0) {
       // 예외 처리
@@ -76,7 +88,7 @@ async function openBrowser(keyword) {
         ];
       }
 
-    // 처음 이후 검색
+      // 처음 이후 검색
     } else {
       // 예외 처리
       try {
@@ -86,9 +98,7 @@ async function openBrowser(keyword) {
         // 브라우저를 호출해 다음 버튼을 클릭
         await page.evaluate(() => {
           const nextBtn = document.querySelector("#pnnext");
-          if (nextBtn) {
-            nextBtn.click();
-          }
+          nextBtn && nextBtn.click();
         });
 
         // 크롤링해서 검색 결과들을 담음
@@ -153,12 +163,12 @@ async function openBrowser(keyword) {
 }
 
 // path 모듈 불러오기
-const path = require('path');
+const path = require("path");
 
 // 리액트 정적 파일 제공
-app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static(path.join(__dirname, "client/build")));
 
 // 라우트 설정
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
