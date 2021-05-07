@@ -34,7 +34,6 @@ const puppeteer = require("puppeteer");
  * @return {array} 검색 결과
  */
 async function openBrowser(keyword, pageNum) {
-  let a = null;
 
   // 모든 검색결과
   let searchAllData = [];
