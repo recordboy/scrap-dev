@@ -34,7 +34,6 @@ const puppeteer = require("puppeteer");
  * @return {array} 검색 결과
  */
 async function openBrowser(keyword, pageNum) {
-  
   let a = null;
 
   // 모든 검색결과
@@ -53,6 +52,23 @@ async function openBrowser(keyword, pageNum) {
   // 브라우저 열기
   const page = await browser.newPage();
 
+  // 해당 리소스 로딩 안함 
+  await page.setRequestInterception(true);
+  await page.on("request", (req) => {
+
+    // console.log(req.resourceType());
+    if (
+      req.resourceType() == "stylesheet" ||
+      req.resourceType() == "font" ||
+      req.resourceType() == "image"
+    ) {
+      req.abort();
+    } else {
+      req.continue();
+    }
+  });
+  await page.setJavaScriptEnabled(false);
+
   // 포탈로 이동
   await page.goto("https://www.google.com/");
 
@@ -62,15 +78,9 @@ async function openBrowser(keyword, pageNum) {
   // 키워드 검색
   await page.type("input[class='gLFyf gsfi']", String.fromCharCode(13));
 
-  // a = setInterval(() => {
-  //   console.log();
-
-  // }, 100);
-
-
   // 검색하고 싶은 페이지 수 만큼 반복
   for (let i = 0; i < 2; i++) {
-    console.log(i);
+    console.log(i + " ..");
 
     // 처음 검색
     if (i === 0) {
