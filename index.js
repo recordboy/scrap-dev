@@ -78,7 +78,7 @@ async function openBrowser(keyword, pageNum) {
   await page.type("input[class='gLFyf gsfi']", String.fromCharCode(13));
 
   // 검색하고 싶은 페이지 수 만큼 반복
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < 20; i++) {
     console.log(i + " ..");
 
     // 처음 검색
