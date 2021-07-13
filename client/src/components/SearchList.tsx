@@ -19,9 +19,9 @@ const SearchList = (props: { searchData: []; isOnLoading: boolean }) => {
 
   function getColumn(width: number): string {
     let column: string = "";
-    if (width < 320) {
+    if (width < 360) {
       column = "2";
-    } else if (width >= 320 && width < 600) {
+    } else if (width >= 360 && width < 600) {
       column = "3";
     } else if (width >= 600 && width < 900) {
       column = "4";
